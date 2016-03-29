@@ -4,6 +4,7 @@
 
 # API configuration
 mensaapp/Config.bundle/Key.txt
+mensaapp/Resources/Config.bundle/Key.txt
 
 ## Build generated
 build/

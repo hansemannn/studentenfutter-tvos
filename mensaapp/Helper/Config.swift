@@ -15,7 +15,7 @@ class Config : NSObject {
         bundle = NSBundle(path:NSBundle.mainBundle().pathForResource("Config", ofType: "bundle")!)
     }
     
-    func getAPIKey() -> NSString? {
+    func apiKey() -> NSString? {
         let file = bundle.pathForResource("Key", ofType: "txt")
         
         if (file == nil) {

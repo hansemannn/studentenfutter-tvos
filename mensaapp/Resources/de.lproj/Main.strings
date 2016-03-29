@@ -1,0 +1,21 @@
+
+/* Class = "UINavigationItem"; title = "Heute"; ObjectID = "7ir-H5-Nbz"; */
+"7ir-H5-Nbz.title" = "Heute";
+
+/* Class = "UITableViewController"; title = "Heute"; ObjectID = "8K9-6A-lfb"; */
+"8K9-6A-lfb.title" = "Heute";
+
+/* Class = "UILabel"; text = "2,55"; ObjectID = "8X0-oc-9hU"; */
+"8X0-oc-9hU.text" = "2,55";
+
+/* Class = "UILabel"; text = "Kein Gericht ausgewählt"; ObjectID = "Mwx-0r-59q"; */
+"Mwx-0r-59q.text" = "Kein Gericht ausgewählt";
+
+/* Class = "UILabel"; text = "Keine Speiseplan vorhanden"; ObjectID = "X8w-Rx-Jeg"; */
+"X8w-Rx-Jeg.text" = "Keine Speiseplan vorhanden";
+
+/* Class = "UILabel"; text = "Spaghetti Bolognese"; ObjectID = "r9R-2w-LKe"; */
+"r9R-2w-LKe.text" = "Spaghetti Bolognese";
+
+/* Class = "UILabel"; text = "0 Zusätze"; ObjectID = "xUR-lP-rSS"; */
+"xUR-lP-rSS.text" = "0 Zusätze";

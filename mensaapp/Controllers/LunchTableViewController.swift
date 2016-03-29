@@ -29,7 +29,7 @@ class LunchTableViewController: UITableViewController, UISplitViewControllerDele
      Fetches the current lunch data.
      */
     func fetchData() {
-        self.request.load("https://api.studentenfutter-os.de/lunches/list/\(self.getFormattedDate("YYYY-MM-dd"))/0")
+        self.request.load("https://api.studentenfutter-os.de/lunches/list/\(self.formattedDate("YYYY-MM-dd"))/0")
     }
     
     /**
@@ -64,7 +64,7 @@ class LunchTableViewController: UITableViewController, UISplitViewControllerDele
      
      - returns: The formatted date
      */
-    func getFormattedDate(format : String) -> String {
+    func formattedDate(format : String) -> String {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = format
         
@@ -78,7 +78,7 @@ class LunchTableViewController: UITableViewController, UISplitViewControllerDele
         if self.isToday() {
             self.title = "Heute"
         } else {
-            self.title = self.getFormattedDate(self.getFormattedDate("dd.MM.yyyy"))
+            self.title = self.formattedDate("dd.MM.yyyy")
         }
         
         self.tableView.reloadData()
@@ -157,9 +157,21 @@ class LunchTableViewController: UITableViewController, UISplitViewControllerDele
     func didReceiveDummyData(request: Request) {
         let data: [NSDictionary] = [
             [
-                "name": "Test",
+                "name": "Spaghetti Bolognese",
                 "additives": ["a","b","c"],
                 "priceStudent" : "2.55 €",
+                "images" : []
+            ],
+            [
+                "name": "Pizza Salami",
+                "additives": ["a","b","c"],
+                "priceStudent" : "1.90 €",
+                "images" : []
+            ],
+            [
+                "name": "Wiener Schnitzel",
+                "additives": ["a","b","c"],
+                "priceStudent" : "3.39 €",
                 "images" : []
             ]
         ]

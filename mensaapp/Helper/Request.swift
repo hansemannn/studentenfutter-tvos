@@ -28,14 +28,14 @@ class Request : NSObject, NSURLSessionDelegate, RequestDelegate {
     func load(url: String) {
         self.delegate.didStartLoadingWithRequest!(self)
         
-        if (config.getAPIKey() == nil) {
+        if (config.apiKey() == nil) {
             self.delegate.didReceiveDummyData!(self)
             return;
         }
         
         let urlPath = NSURL(string: url)
         let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        sessionConfiguration.HTTPAdditionalHeaders = ["Authorization" : config.getAPIKey()!]
+        sessionConfiguration.HTTPAdditionalHeaders = ["Authorization" : config.apiKey()!]
         
         let session = NSURLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
         

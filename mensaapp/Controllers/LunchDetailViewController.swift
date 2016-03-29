@@ -39,7 +39,7 @@ class LunchDetailViewController: UIViewController, UISplitViewControllerDelegate
                 self.showImage()
             })
         } else {
-            (self.placeholder.subviews[1] as? UILabel)!.text = "Kein Foto vorhanden"
+            (self.placeholder.subviews[2] as? UILabel)!.text = "Kein Foto vorhanden"
             self.hideImage()
         }
         
