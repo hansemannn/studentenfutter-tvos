@@ -160,7 +160,9 @@ class LunchTableViewController: UITableViewController, UISplitViewControllerDele
                 "name": "Spaghetti Bolognese",
                 "additives": ["a","b","c"],
                 "priceStudent" : "2.55 €",
-                "images" : []
+                "images" : [
+                    "http://abload.de/img/spaghetti-bolognese-dfdp11.jpg"
+                ]
             ],
             [
                 "name": "Pizza Salami",
@@ -172,7 +174,9 @@ class LunchTableViewController: UITableViewController, UISplitViewControllerDele
                 "name": "Wiener Schnitzel",
                 "additives": ["a","b","c"],
                 "priceStudent" : "3.39 €",
-                "images" : []
+                "images" : [
+                    "http://abload.de/img/wiener-schnitzel02sjpx3.jpg"
+                ]
             ]
         ]
         
