@@ -25,7 +25,7 @@ class Config : NSObject {
         do {
             return try NSString(contentsOfFile: file!, encoding: NSUTF8StringEncoding)
         } catch {
-            print("Warning: Config could not be located, using fallback ...")
+            print("⚠️ Warning: Config could not be located, using fallback ...")
             return nil
         }        
     }

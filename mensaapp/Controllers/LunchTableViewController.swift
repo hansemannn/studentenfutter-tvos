@@ -142,10 +142,10 @@ class LunchTableViewController: UITableViewController, UISplitViewControllerDele
                     self.lunches.append(Lunch(dictionary: lunch))
                 }
             } catch {
-                print("Error: Cannot parse response!")
+                print("🙉 Error: Cannot parse response!")
             }
         } else {
-            print("Error: Wrong HTTP response: \(httpResponse.statusCode)")
+            print("🙉 Error: Wrong HTTP response: \(httpResponse.statusCode)")
         }
         
         dispatch_async(dispatch_get_main_queue(), {
