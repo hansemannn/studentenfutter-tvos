@@ -13,7 +13,15 @@ public class Lunch : NSObject {
     // MARK: Properties
     var name: String!
     var images: Array<String>!
-    var additivesCount: String!
+    var additivesDescription: String! {
+        get {
+            let prefix: NSString = additives.count == 0 ? "Kein" : additives.count == 1 ? "Ein" : ""
+            return prefix.length == 0 ? "\(additives.count) Zusätze" : "\(prefix) Zusatz"
+        }
+        set {
+            self.additivesDescription = newValue
+        }
+    }
     var rawValue: NSDictionary!
     var price: String!
     var additives: Array<String>!
@@ -25,15 +33,14 @@ public class Lunch : NSObject {
      */
     init(dictionary: NSDictionary) {
 
+        super.init()
         self.name = dictionary.objectForKey("name") as! String
         
         if let _additives = dictionary["additives"] {
-            if _additives is NSNull {
+            if _additives is NSNull || _additives is NSDictionary {
                 self.additives = []
-                self.additivesCount = "Keine Zusätze"
             } else {
                 self.additives = _additives as! Array<String>
-                self.additivesCount = "\(self.additives.count) Zusätze"
             }
         }
         self.images = dictionary.objectForKey("images") as! Array

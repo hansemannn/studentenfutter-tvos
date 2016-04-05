@@ -215,7 +215,7 @@ class LunchTableViewController: UITableViewController, UISplitViewControllerDele
         
         cell.titleLabel.text = lunch.name
         cell.priceLabel.text = lunch.price
-        cell.additivesLabel.text = lunch.additivesCount
+        cell.additivesLabel.text = lunch.additivesDescription
         
         return cell
     }
