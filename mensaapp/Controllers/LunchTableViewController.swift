@@ -14,7 +14,7 @@ class LunchTableViewController: UITableViewController, UISplitViewControllerDele
     var loader: UIActivityIndicatorView!
     var request: Request!
     var lunches: [Lunch] = []
-    var currentDate: NSDate! = NSDate() {
+    var currentDate: Date! = Date() {
         didSet {
             self.fetchData()
         }
@@ -37,9 +37,9 @@ class LunchTableViewController: UITableViewController, UISplitViewControllerDele
      */
     func showLoader() {
         if loader == nil {
-            loader = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
-            loader.color = UIColor.grayColor()
-            loader.center = CGPointMake(self.view.center.x, self.view.center.y - 80)
+            loader = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+            loader.color = UIColor.gray
+            loader.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 80)
         }
         
         loader.startAnimating()
@@ -64,11 +64,11 @@ class LunchTableViewController: UITableViewController, UISplitViewControllerDele
      
      - returns: The formatted date
      */
-    func formattedDate(format : String) -> String {
-        let dateFormatter = NSDateFormatter()
+    func formattedDate(_ format : String) -> String {
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
         
-        return dateFormatter.stringFromDate(self.currentDate)
+        return dateFormatter.string(from: self.currentDate)
     }
     
     /**
@@ -91,17 +91,17 @@ class LunchTableViewController: UITableViewController, UISplitViewControllerDele
      - returns: `true` if the current date is today, `false` otherwise
      */
     func isToday() -> Bool {
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy"
         
-        return dateFormatter.stringFromDate(currentDate) == dateFormatter.stringFromDate(NSDate())
+        return dateFormatter.string(from: currentDate) == dateFormatter.string(from: Date())
     }
     
     /**
      Validates the placeholder visibility
      */
     func validatePlaceholder() {
-        self.placeholder.hidden = self.lunches.count > 0
+        self.placeholder.isHidden = self.lunches.count > 0
     }
  
     // MARK: Actions
@@ -112,8 +112,8 @@ class LunchTableViewController: UITableViewController, UISplitViewControllerDele
      
      - parameter sender: The right navigationBar button
      */
-    @IBAction func showTomorrowLunches(sender: UIBarButtonItem) {
-        self.currentDate = self.currentDate.dateByAddingTimeInterval(1*60*60*24) // + 1 day
+    @IBAction func showTomorrowLunches(_ sender: UIBarButtonItem) {
+        self.currentDate = self.currentDate.addingTimeInterval(1*60*60*24) // + 1 day
     }
 
     /**
@@ -122,22 +122,22 @@ class LunchTableViewController: UITableViewController, UISplitViewControllerDele
      
      - parameter sender: The left navigationBar button
      */
-    @IBAction func showYesterdayLunches(sender: UIBarButtonItem) {
-        self.currentDate = self.currentDate.dateByAddingTimeInterval(-1*60*60*24) // - 1 day
+    @IBAction func showYesterdayLunches(_ sender: UIBarButtonItem) {
+        self.currentDate = self.currentDate.addingTimeInterval(-1*60*60*24) // - 1 day
     }
     
     // MARK: Delegates
     
-    func didStartLoadingWithRequest(request: Request) {
+    func didStartLoadingWithRequest(_ request: Request) {
         self.showLoader()
     }
     
-    func didFinishLoadingWithRequest(request: Request, data: NSData, response: NSURLResponse, error: NSError?) {
-        let httpResponse: NSHTTPURLResponse = response as! NSHTTPURLResponse
+    func didFinishLoadingWithRequest(_ request: Request, data: Data?, response: URLResponse?, error: Error?) {
+        let httpResponse: HTTPURLResponse = response as! HTTPURLResponse
         
         if  httpResponse.statusCode == 200 {
             do {
-                let data: [NSDictionary] = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as! [NSDictionary]
+                let data: [NSDictionary] = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [NSDictionary]
                 for lunch: NSDictionary in data {
                     self.lunches.append(Lunch(dictionary: lunch))
                 }
@@ -148,13 +148,13 @@ class LunchTableViewController: UITableViewController, UISplitViewControllerDele
             print("🙉 Error: Wrong HTTP response: \(httpResponse.statusCode)")
         }
         
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.hideLoader()
             self.setUI()
         })
     }
     
-    func didReceiveDummyData(request: Request) {
+    func didReceiveDummyData(_ request: Request) {
         let data: [NSDictionary] = [
             [
                 "name": "Spaghetti Bolognese",
@@ -197,20 +197,20 @@ class LunchTableViewController: UITableViewController, UISplitViewControllerDele
         self.request = Request(delegate: self)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         self.fetchData()
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.lunches.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("LunchCell", forIndexPath: indexPath) as! LunchCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "LunchCell", for: indexPath) as! LunchCell
         let lunch = lunches[indexPath.row] as Lunch
         
         cell.titleLabel.text = lunch.name
@@ -220,7 +220,7 @@ class LunchTableViewController: UITableViewController, UISplitViewControllerDele
         return cell
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailViewController = self.splitViewController?.viewControllers[1] as? LunchDetailViewController
         detailViewController?.lunch = self.lunches[indexPath.row]
     }

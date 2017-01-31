@@ -8,14 +8,14 @@
 
 import Foundation
 
-public class Lunch : NSObject {
+open class Lunch : NSObject {
     
     // MARK: Properties
     var name: String!
     var images: Array<String>!
     var additivesDescription: String! {
         get {
-            let prefix: NSString = additives.count == 0 ? "Kein" : additives.count == 1 ? "Ein" : ""
+            let prefix: NSString = additives == nil || additives.count == 0 ? "Kein" : additives.count == 1 ? "Ein" : ""
             return prefix.length == 0 ? "\(additives.count) Zusätze" : "\(prefix) Zusatz"
         }
         set {
@@ -34,7 +34,7 @@ public class Lunch : NSObject {
     init(dictionary: NSDictionary) {
 
         super.init()
-        self.name = dictionary.objectForKey("name") as! String
+        self.name = dictionary.object(forKey: "name") as! String
         
         if let _additives = dictionary["additives"] {
             if _additives is NSNull || _additives is NSDictionary {
@@ -43,7 +43,7 @@ public class Lunch : NSObject {
                 self.additives = _additives as! Array<String>
             }
         }
-        self.images = dictionary.objectForKey("images") as! Array
+        self.images = dictionary.object(forKey: "images") as! Array
         self.rawValue = dictionary
 
         let _price = self.rawValue["priceStudent"] as! String
@@ -51,9 +51,9 @@ public class Lunch : NSObject {
         self.price = priceArr[0]
     }
     
-    func formatPrice(_price: String) -> NSNumber {
+    func formatPrice(_ _price: String) -> NSNumber {
         let priceArr = _price.characters.split{$0 == " "}.map(String.init)
 
-        return NSNumberFormatter().numberFromString(priceArr[0])!
+        return NumberFormatter().number(from: priceArr[0])!
     }
 }

@@ -11,7 +11,7 @@ import UIKit
 class LunchDetailViewController: UIViewController, UISplitViewControllerDelegate {
     
     // MARK: Properties
-    var images: NSArray!
+    var images: Array<String>!
     var lunch: Lunch! {
         didSet {
             self.setUI()
@@ -31,10 +31,10 @@ class LunchDetailViewController: UIViewController, UISplitViewControllerDelegate
     func setUI() {
         images = self.lunch.images
         if images != nil && images.count > 0 {
-            let url: NSURL = NSURL(string: images[0] as! String)!
-            let data: NSData = NSData(contentsOfURL: url)!
+            let url: URL = URL(string: images[0])!
+            let data: Data = try! Data(contentsOf: url)
             
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.image.image = UIImage(data: data)
                 self.showImage()
             })
@@ -50,8 +50,8 @@ class LunchDetailViewController: UIViewController, UISplitViewControllerDelegate
      Hides the detail image.
      */
     func hideImage() {
-        dispatch_async(dispatch_get_main_queue(), {
-            self.image.hidden = true
+        DispatchQueue.main.async(execute: {
+            self.image.isHidden = true
         })
     }
     
@@ -59,14 +59,14 @@ class LunchDetailViewController: UIViewController, UISplitViewControllerDelegate
      Shows the detail image.
      */
     func showImage() {
-        dispatch_async(dispatch_get_main_queue(), {
-            self.image.hidden = false
+        DispatchQueue.main.async(execute: {
+            self.image.isHidden = false
         })
     }
     
     func configureImage() {
-        image.layer.shadowOffset = CGSizeMake(10, 15)
-        image.layer.shadowColor = UIColor.grayColor().CGColor
+        image.layer.shadowOffset = CGSize(width: 10, height: 15)
+        image.layer.shadowColor = UIColor.gray.cgColor
         image.layer.shadowRadius = 15
         image.layer.shadowOpacity = 0.7
     }
@@ -77,7 +77,7 @@ class LunchDetailViewController: UIViewController, UISplitViewControllerDelegate
         splitViewController?.delegate = self
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         self.configureImage()
     }
 }

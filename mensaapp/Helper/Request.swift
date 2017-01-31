@@ -9,12 +9,12 @@
 import Foundation
 
 @objc protocol RequestDelegate: class {
-    optional func didReceiveDummyData(request: Request)
-    optional func didStartLoadingWithRequest(request: Request)
-    optional func didFinishLoadingWithRequest(request: Request, data: NSData, response: NSURLResponse, error: NSError?)
+    @objc optional func didReceiveDummyData(_ request: Request)
+    @objc optional func didStartLoadingWithRequest(_ request: Request)
+    @objc optional func didFinishLoadingWithRequest(_ request: Request, data: Data?, response: URLResponse?, error: Error?)
 }
 
-class Request : NSObject, NSURLSessionDelegate, RequestDelegate {
+class Request : NSObject, URLSessionDelegate, RequestDelegate {
     
     weak var delegate: RequestDelegate!
     var config: Config!
@@ -25,7 +25,7 @@ class Request : NSObject, NSURLSessionDelegate, RequestDelegate {
         self.config = Config()
     }
     
-    func load(url: String) {
+    func load(_ url: String) {
         self.delegate.didStartLoadingWithRequest!(self)
         
         if (config.apiKey() == nil) {
@@ -33,14 +33,14 @@ class Request : NSObject, NSURLSessionDelegate, RequestDelegate {
             return;
         }
         
-        let urlPath = NSURL(string: url)
-        let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        sessionConfiguration.HTTPAdditionalHeaders = ["Authorization" : config.apiKey()!]
+        let urlPath = URL(string: url)
+        let sessionConfiguration = URLSessionConfiguration.default
+        sessionConfiguration.httpAdditionalHeaders = ["Authorization" : config.apiKey()!]
         
-        let session = NSURLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
+        let session = URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
         
-        let task = session.dataTaskWithURL(urlPath!, completionHandler: {(data, response, error) in
-            self.delegate.didFinishLoadingWithRequest!(self, data:data!, response: response!, error: error)
+        let task = session.dataTask(with: urlPath!, completionHandler: {(data, response, error) in
+            self.delegate.didFinishLoadingWithRequest!(self, data: data, response: response, error: error)
         })
         task.resume()
     }
